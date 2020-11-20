@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
-import { FaQuoteRight } from 'react-icons/fa';
+import Person from './Person';
+import Button from './Button';
 import data from './data';
 function App() {
   const [people, setPeople] = useState(data);
@@ -27,6 +28,10 @@ function App() {
     }
   }, [index]);
 
+  const onPrevClick = () => setIndex(index - 1);
+
+  const onNextClick = () => setIndex(index + 1);
+
   return (
     <section className="section">
       <div className="title">
@@ -35,7 +40,6 @@ function App() {
       <div className="section-center">
         {
           people.map((person, personIndex) => {
-            const { id, image, name, title, quote } = person;
             let position = 'nextSlide';
             
             if (personIndex === index) {
@@ -47,18 +51,17 @@ function App() {
             }
             
             return (
-              <article key={id} className={position}>
-                <img src={image} alt={name} className="person-img" />
-                <h2>{name}</h2>
-                <p className="title">{title}</p>
-                <p className="text">{quote}</p>
-                <FaQuoteRight className="icon" />
-              </article>
+              <Person person={person} key={person.id} position={position}></Person>
+              
             )
           })
         }
-        <button type="button" className="prev" onClick={() => setIndex(index - 1)}><FiChevronLeft /></button>
-        <button type="button" className="next" onClick={() => setIndex(index + 1)}><FiChevronRight /></button>
+        <Button type="button" classes="prev" onClick={onPrevClick}>
+          <FiChevronLeft />
+        </Button>
+        <Button type="button" classes="next" onClick={onNextClick}>
+          <FiChevronRight />
+        </Button>
       </div>
     </section>
   )
