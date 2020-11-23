@@ -49,7 +49,7 @@ function App() {
         {
           error ? <p>Unable to generate a color from the color provided</p> :
           list.map((color, index) => {
-            return <SingleColor key={index} {...color} index={index} />
+            return <SingleColor key={index} {...color} index={index} hexColor={color.hex} />
           })
         }
         
