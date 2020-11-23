@@ -10,7 +10,16 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submitted');
+
+    try {
+      let colors = new Values(color).all(10);
+      console.log(colors);
+      setList(colors);
+      setError(false);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
   }
 
   const handleChange = (e) => {
@@ -24,12 +33,26 @@ function App() {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="color">Color:</label>
-          <input type="text" value={color} id="color" name="color" onChange={handleChange} placeholder="#f15025" />
+          <input 
+            type="text" 
+            value={color} 
+            id="color" 
+            name="color" 
+            onChange={handleChange} 
+            placeholder="#f15025" 
+            className={ `${error ? 'error' : null }`}
+          />
           <button type="submit" className="btn">Submit</button>
         </form>
       </section>
       <section className="colors">
-        <h2>List goes here</h2>
+        {
+          error ? <p>Unable to generate a color from the color provided</p> :
+          list.map((color, index) => {
+            return <SingleColor key={index} {...color} index={index} />
+          })
+        }
+        
       </section>
     </>
   )
