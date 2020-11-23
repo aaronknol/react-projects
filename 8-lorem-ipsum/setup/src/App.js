@@ -12,31 +12,21 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let amount = Number(count);
-    let newData = [...data];
-    console.log('count: ', count, ' length: ', data.length);
-    if (count <= 0) {
-      amount = 1;
-    }
+    let repeatingData = [...data];
+    
     if (count > data.length) {
       
       let difference = count - data.length;
       
-      if (difference < data.length) {
-        for (let i = 0; i < difference; i++) {
-          newData.push(data[i]);
-        }
-      } else {
-        while (difference > 0) {
-          console.log('hey: ', ((newData.length + 1) % data.length));
-          newData[newData.length] = data[(newData.length) % data.length];
-          difference = difference - 1;
-        }
+      while (difference > 0) {
+        repeatingData[repeatingData.length] = data[(repeatingData.length) % data.length];
+        difference = difference - 1;
       }
       
-      console.log(newData);
+      setText(repeatingData);
+    } else {
+      setText(data.slice(0, count));
     }
-    setText(data.slice(0, count));
   }
   
   return (
