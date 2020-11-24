@@ -5,15 +5,17 @@ import Values from 'values.js'
 
 function App() {
   const [color, setColor] = useState('');
+  const [numberOfColors, setNumberOfColors] = useState(10);
   const [error, setError] = useState(false);
   const [list, setList] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('firing');
+    
+    try {console.log('number of colors: ', numberOfColors);
+      let colors = new Values(color).all(numberOfColors);
 
-    try {
-      let colors = new Values(color).all(10);
-      console.log(colors);
       setList(colors);
       setError(false);
     } catch (error) {
@@ -24,6 +26,10 @@ function App() {
 
   const handleChange = (e) => {
     setColor(e.target.value);
+  }
+
+  const handleChangeColors = (e) => {
+    setNumberOfColors(e.target.value);
   }
 
   return (
@@ -42,15 +48,26 @@ function App() {
             placeholder="#f15025" 
             className={ `${error ? 'error' : null }`}
           />
+          <input 
+            type="text" 
+            value={numberOfColors} 
+            id="numberOfColors" 
+            name="numberOfColors" 
+            onChange={handleChangeColors} 
+            placeholder="10" 
+            className={ `${error ? 'error' : null }`}
+          />
           <button type="submit" className="btn">Submit</button>
         </form>
       </section>
       <section className="colors">
-        {
-          error ? <p>Unable to generate a color from the color provided</p> :
-          list.map((color, index) => {
-            return <SingleColor key={index} {...color} index={index} hexColor={color.hex} />
-          })
+        { error && color !== '' && <p style={{ textAlign: 'center' }}>Unable to generate a color from the color provided</p> }
+        { color === '' && <p style={{ textAlign: 'center' }}>Enter a hex code!</p> }
+        { !error && (
+            list.map((color, index) => {
+              return <SingleColor key={index} {...color} index={index} hexColor={color.hex} />
+            })
+          )
         }
         
       </section>
